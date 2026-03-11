@@ -8,7 +8,31 @@ No production systems, real corporate infrastructure, proprietary data, or exter
 > **Redaction Notice:** Organization name, network identifiers, hostnames, usernames, and any environment-specific fingerprints have been anonymized as **TARGET-CORP** to prevent attribution and to protect operational security.
 
 ---
-
+## 📑 Table of Contents
+- [Phase 1: Email Perimeter](#-phase-1--email-perimeter--seg-rule-mapping)
+- [Phase 2: Endpoint Execution Controls](#-phase-2--endpoint-execution-controls-macro-simulation)
+- [Phase 3: Container-Based Delivery](#-phase-3--container-based-delivery-iso--disk-images)
+- [Phase 4: HTML Smuggling](#-phase-4--html-smuggling--dynamic-analysis)
+- [Phase 5: Link-Based Delivery](#-phase-5--link-based-delivery--url-inspection)
+- [Phase 6: Network Segmentation](#-phase-6--network-segmentation--egress-constraints)
+- [Phase 7: Web Reputation](#-phase-7--web-reputation--egress-inspection-public-tunneling-pattern)
+- [Phase 8: URL Obfuscation](#-phase-8--url-obfuscation-via-trusted-redirection)
+- [Phase 9: LotL Behavior](#-phase-9--living-off-the-land-lotl-behavior-observation)
+- [Phase 10: Credential Harvesting](#-phase-10--credential-harvesting-simulation-layer-7)
+- [Phase 11: Evasion Validation](#-phase-11--pivot-to-evasion-validation--local-vulnerability-posture)
+- [Phase 12: Internal Recon](#-phase-12--internal-reconnaissance--service-exposure-validation)
+- [Phase 13: Local Enumeration](#-phase-13--local-enumeration-ground-truth)
+- [Phase 14: AMT Exposure](#-phase-14--intel-manageability-amt-exposure--patch-validation)
+- [Phase 15: Lateral Communication](#-phase-15--lateral-communication-constraints)
+- [Phase 16: Reverse Tunneling](#-phase-16--reverse-tunneling-assume-breach-channel)
+- [Phase 17: OOB Control](#-phase-17--out-of-band-connectivity-oob-control-test)
+- [Phase 18: Internal Port Exposure](#-phase-18--internal-port-exposure-via-tunnel-lab-validation)
+- [Phase 19: CVE Validation](#-phase-19--known-cve-validation-patched-state-confirmation)
+- [Phase 20: Service Probing](#-phase-20--service-probing--protocol-behavior-management-remote-control)
+- [Phase 21: Exploitability Constraints](#-phase-21--exploitability-constraints--defense-in-depth-confirmation)
+- [Post-Exploitation Analysis](#-post-exploitation-boundary-analysis-assumed-breach)
+- [Final Summary](#-final-engagement-summary)
+  
 ## 🎯 Objective
 The purpose of this work is to **map the defensive perimeter** of a modern, hardened enterprise endpoint and measure how well layered controls resist common delivery and execution attempts.
 
