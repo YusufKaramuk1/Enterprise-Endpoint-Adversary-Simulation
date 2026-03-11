@@ -8,31 +8,70 @@ No production systems, real corporate infrastructure, proprietary data, or exter
 > **Redaction Notice:** Organization name, network identifiers, hostnames, usernames, and any environment-specific fingerprints have been anonymized as **TARGET-CORP** to prevent attribution and to protect operational security.
 
 ---
+
 ## 📑 Table of Contents
-- [Phase 1: Email Perimeter](#-phase-1--email-perimeter--seg-rule-mapping)
-- [Phase 2: Endpoint Execution Controls](#-phase-2--endpoint-execution-controls-macro-simulation)
-- [Phase 3: Container-Based Delivery](#-phase-3--container-based-delivery-iso--disk-images)
-- [Phase 4: HTML Smuggling](#-phase-4--html-smuggling--dynamic-analysis)
-- [Phase 5: Link-Based Delivery](#-phase-5--link-based-delivery--url-inspection)
-- [Phase 6: Network Segmentation](#-phase-6--network-segmentation--egress-constraints)
-- [Phase 7: Web Reputation](#-phase-7--web-reputation--egress-inspection-public-tunneling-pattern)
-- [Phase 8: URL Obfuscation](#-phase-8--url-obfuscation-via-trusted-redirection)
-- [Phase 9: LotL Behavior](#-phase-9--living-off-the-land-lotl-behavior-observation)
-- [Phase 10: Credential Harvesting](#-phase-10--credential-harvesting-simulation-layer-7)
-- [Phase 11: Evasion Validation](#-phase-11--pivot-to-evasion-validation--local-vulnerability-posture)
-- [Phase 12: Internal Recon](#-phase-12--internal-reconnaissance--service-exposure-validation)
-- [Phase 13: Local Enumeration](#-phase-13--local-enumeration-ground-truth)
-- [Phase 14: AMT Exposure](#-phase-14--intel-manageability-amt-exposure--patch-validation)
-- [Phase 15: Lateral Communication](#-phase-15--lateral-communication-constraints)
-- [Phase 16: Reverse Tunneling](#-phase-16--reverse-tunneling-assume-breach-channel)
-- [Phase 17: OOB Control](#-phase-17--out-of-band-connectivity-oob-control-test)
-- [Phase 18: Internal Port Exposure](#-phase-18--internal-port-exposure-via-tunnel-lab-validation)
-- [Phase 19: CVE Validation](#-phase-19--known-cve-validation-patched-state-confirmation)
-- [Phase 20: Service Probing](#-phase-20--service-probing--protocol-behavior-management-remote-control)
-- [Phase 21: Exploitability Constraints](#-phase-21--exploitability-constraints--defense-in-depth-confirmation)
-- [Post-Exploitation Analysis](#-post-exploitation-boundary-analysis-assumed-breach)
-- [Final Summary](#-final-engagement-summary)
-  
+
+- [🎯 Objective](#-objective)
+- [🏗️ Lab Architecture](#️-lab-architecture)
+- [📋 Phase 1.1 — Email Perimeter & SEG Rule Mapping](#-phase-11--email-perimeter--seg-rule-mapping)
+  - [1.1.1 Raw Executables (.exe, .bat)](#111-raw-executables-exe-bat)
+  - [1.1.2 Password-Protected Archives (.zip)](#112-password-protected-archives-zip)
+  - [1.1.3 Macro-Enabled Documents (.docm)](#113-macro-enabled-documents-docm)
+- [💻 Phase 1.2 — Endpoint Execution Controls (Macro Simulation)](#-phase-12--endpoint-execution-controls-macro-simulation)
+  - [1.2.1 Visual Engineering (User Prompt Simulation)](#121-visual-engineering-user-prompt-simulation)
+  - [1.2.2 Execution Attempt & Response](#122-execution-attempt--response)
+  - [1.2.3 Phase Conclusion](#123-phase-conclusion)
+- [🛠️ Phase 1.3 — Container-Based Delivery (ISO / Disk Images)](#-phase-13--container-based-delivery-iso--disk-images)
+- [💻 Phase 1.4 — HTML Smuggling & Dynamic Analysis](#-phase-14--html-smuggling--dynamic-analysis)
+  - [1.4.1 Static HTML Delivery](#141-static-html-delivery)
+  - [1.4.2 Scripted Payload Construction Behavior](#142-scripted-payload-construction-behavior)
+- [🔗 Phase 1.5 — Link-Based Delivery & URL Inspection](#-phase-15--link-based-delivery--url-inspection)
+  - [1.5.1 High-Reputation URL](#151-high-reputation-url)
+  - [1.5.2 Direct Link to Executable Artifact](#152-direct-link-to-executable-artifact)
+- [📡 Phase 1.6 — Network Segmentation & Egress Constraints](#-phase-16--network-segmentation--egress-constraints)
+- [🌐 Phase 1.7 — Web Reputation & Egress Inspection](#-phase-17--web-reputation--egress-inspection-public-tunneling-pattern)
+  - [1.7.1 URL Rewriting & Time-of-Click Protection](#171-url-rewriting--time-of-click-protection)
+- [🔗 Phase 1.8 — URL Obfuscation via Trusted Redirection](#-phase-18--url-obfuscation-via-trusted-redirection)
+- [🛠️ Phase 1.9 — Living off the Land (LotL) Behavior Observation](#-phase-19--living-off-the-land-lotl-behavior-observation)
+  - [1.9.1 Native Scripting for Outbound Socket Behavior](#191-native-scripting-for-outbound-socket-behavior)
+  - [1.9.2 "Ghost Connection" Anomaly](#192-ghost-connection-anomaly)
+- [🕵️ Phase 1.10 — Credential Harvesting Simulation (Layer 7)](#-phase-110--credential-harvesting-simulation-layer-7)
+  - [1.10.1 Infrastructure Simulation](#1101-infrastructure-simulation)
+  - [1.10.2 Modern Authentication Portal Behavior](#1102-modern-authentication-portal-behavior)
+- [🚀 Phase 1.11 — Pivot to Evasion Validation & Local Vulnerability Posture](#-phase-111--pivot-to-evasion-validation--local-vulnerability-posture)
+  - [1.11.1 Alternate Relay Observations](#1111-alternate-relay-observations)
+  - [1.11.2 Browser-Level Data Exfiltration Warnings & Hard Blocks](#1112-browser-level-data-exfiltration-warnings--hard-blocks)
+  - [1.11.3 Cross-Environment Validation](#1113-cross-environment-validation)
+- [🔍 Phase 1.12 — Internal Reconnaissance & Service Exposure Validation](#-phase-112--internal-reconnaissance--service-exposure-validation)
+  - [1.12.1 Topology & Gateway Enforcement](#1121-topology--gateway-enforcement)
+  - [1.12.2 External Scanning Artifacts](#1122-external-scanning-artifacts)
+- [🔍 Phase 1.13 — Local Enumeration (Ground Truth)](#-phase-113--local-enumeration-ground-truth)
+  - [1.13.1 True Listening Services](#1131-true-listening-services)
+- [⚔️ Phase 1.14 — Intel Manageability (AMT) Exposure & Patch Validation](#-phase-114--intel-manageability-amt-exposure--patch-validation)
+  - [1.14.1 GUI Access Hardening](#1141-gui-access-hardening)
+  - [1.14.2 API Endpoint Authentication](#1142-api-endpoint-authentication)
+  - [1.14.3 High-Privilege Local Service (Management Remote Control)](#1143-high-privilege-local-service-management-remote-control)
+- [🧱 Phase 1.15 — Lateral Communication Constraints](#-phase-115--lateral-communication-constraints)
+- [🚀 Phase 1.16 — Reverse Tunneling (Assume Breach Channel)](#-phase-116--reverse-tunneling-assume-breach-channel)
+- [📱 Phase 1.17 — Out-of-Band Connectivity (OOB) Control Test](#-phase-117--out-of-band-connectivity-oob-control-test)
+- [🔑 Phase 1.18 — Internal Port Exposure via Tunnel (Lab Validation)](#-phase-118--internal-port-exposure-via-tunnel-lab-validation)
+- [🎯 Phase 1.19 — Known CVE Validation (Patched State Confirmation)](#-phase-119--known-cve-validation-patched-state-confirmation)
+- [🔬 Phase 1.20 — Service Probing & Protocol Behavior](#-phase-120--service-probing--protocol-behavior-management-remote-control)
+- [⚖️ Phase 1.21 — Exploitability Constraints & Defense-in-Depth Confirmation](#-phase-121--exploitability-constraints--defense-in-depth-confirmation)
+- [🛡️ Post-Exploitation Boundary Analysis (Assumed Breach)](#-post-exploitation-boundary-analysis-assumed-breach)
+  - [1.21.1 Authenticated Enumeration & EDR Response](#1211-authenticated-enumeration--edr-response)
+  - [1.21.2 Privilege Mapping (Insider Risk Finding)](#1212-privilege-mapping-insider-risk-finding)
+  - [1.21.3 Coercion Attempt (Patched / Filtered)](#1213-coercion-attempt-patched--filtered)
+  - [1.21.4 Lateral Movement Constraints](#1214-lateral-movement-constraints)
+- [🏆 Final Engagement Summary](#-final-engagement-summary)
+- [📌 Defensive Recommendations](#-defensive-recommendations-high-level)
+- [🔐 Insider Risk & Privilege Boundary Observation](#-insider-risk--privilege-boundary-observation)
+- [📣 Responsible Disclosure](#-responsible-disclosure)
+- [🏁 Final Reflection](#-final-reflection)
+- [⏩ Next Phase](#-next-phase)
+
+---
+
 ## 🎯 Objective
 The purpose of this work is to **map the defensive perimeter** of a modern, hardened enterprise endpoint and measure how well layered controls resist common delivery and execution attempts.
 
@@ -65,34 +104,34 @@ Primary questions:
 
 ---
 
-## 🛠️ Phase 1 — Email Perimeter & SEG Rule Mapping
-In Phase 1, I mapped the SEG’s attachment policy by sending **benign** test artifacts (no active payloads) to observe blocking and handling behavior.
+## 📋 Phase 1.1 — Email Perimeter & SEG Rule Mapping
+In Phase 1.1, I mapped the SEG's attachment policy by sending **benign** test artifacts (no active payloads) to observe blocking and handling behavior.
 
-### Test 1.1 — Raw Executables (`.exe`, `.bat`)
+### 1.1.1 Raw Executables (`.exe`, `.bat`)
 - **Method:** Attempted delivery of a plain executable attachment.
 - **Result:** 🔴 **Hard Block**
 - **Analysis:** Extension/MIME-based blocking was immediate and effective. Direct executable delivery via email is strongly mitigated.
 
-### Test 1.2 — Password-Protected Archives (`.zip`)
+### 1.1.2 Password-Protected Archives (`.zip`)
 - **Method:** Delivered an encrypted archive containing benign content; password shared in email body.
 - **Result:** 🔴 **Quarantined**
-- **Analysis:** “Block-by-default for encrypted archives” indicates a security-first posture where inspection inability results in containment.
+- **Analysis:** "Block-by-default for encrypted archives" indicates a security-first posture where inspection inability results in containment.
 
-### Test 1.3 — Macro-Enabled Documents (`.docm`)
+### 1.1.3 Macro-Enabled Documents (`.docm`)
 - **Method:** Sent a macro-enabled document containing only a benign marker (no malicious macro logic).
 - **Result:** 🟢 **Delivered**
 - **Analysis:** Macro-enabled documents were permitted, likely due to business continuity requirements. This was identified as a potential delivery candidate to test endpoint execution controls.
 
 ---
 
-## 💻 Phase 2 — Endpoint Execution Controls (Macro Simulation)
+## 💻 Phase 1.2 — Endpoint Execution Controls (Macro Simulation)
 After successful `.docm` delivery, I assessed whether macros could execute under hardened enterprise policy.
 
-### Visual Engineering (User Prompt Simulation)
+### 1.2.1 Visual Engineering (User Prompt Simulation)
 - **Method:** Designed a lure mimicking enterprise information protection prompts to test if users could be induced to enable content.
 - **Goal:** Validate whether endpoint policy relies on user decision points or enforces non-bypassable controls.
 
-### Execution Attempt & Response
+### 1.2.2 Execution Attempt & Response
 - **Payload Type:** Benign macro action (non-malicious), used only to validate execution capability.
 - **Result:** 🔴 **Silent Drop / Complete Mitigation**
 - **Findings:**
@@ -100,12 +139,12 @@ After successful `.docm` delivery, I assessed whether macros could execute under
   2. **GPO Enforcement:** Macro enablement prompts did not appear; macro execution was suppressed regardless of local UI settings.
   3. **VBA Tooling Disabled:** Developer interface and macro engine usage was restricted via policy.
 
-### Phase Conclusion
+### 1.2.3 Phase Conclusion
 The endpoint demonstrated **mature macro hardening**: delivery may succeed, but execution is policy-blocked in a non-interactive way.
 
 ---
 
-## 🛠️ Phase 3 — Container-Based Delivery (ISO / Disk Images)
+## 🛠️ Phase 1.3 — Container-Based Delivery (ISO / Disk Images)
 Given macro execution controls, I tested whether container formats could bypass SEG and/or Mark-of-the-Web style protections.
 
 - **Method:** Delivered a benign disk image container with non-executable content.
@@ -114,37 +153,37 @@ Given macro execution controls, I tested whether container formats could bypass 
 
 ---
 
-## 💻 Phase 4 — HTML Smuggling & Dynamic Analysis
+## 💻 Phase 1.4 — HTML Smuggling & Dynamic Analysis
 I evaluated whether HTML-based delivery would pass static filters and how sandbox detonation behaved.
 
-### Test 4.1 — Static HTML Delivery
+### 1.4.1 Static HTML Delivery
 - **Method:** Benign HTML content without active scripting.
 - **Result:** 🟢 **Delivered**
 - **Analysis:** Static HTML resembled normal web resources and passed initial filters.
 
-### Test 4.2 — Scripted Payload Construction Behavior
-- **Method:** HTML containing common “local reconstruction” behaviors (client-side assembly patterns).
+### 1.4.2 Scripted Payload Construction Behavior
+- **Method:** HTML containing common "local reconstruction" behaviors (client-side assembly patterns).
 - **Result:** 🔴 **Quarantined / Dropped**
 - **Analysis:** The SEG performed **dynamic analysis (sandbox detonation)** and flagged suspicious client-side reconstruction/download behaviors.
 
 ---
 
-## 🔗 Phase 5 — Link-Based Delivery & URL Inspection
+## 🔗 Phase 1.5 — Link-Based Delivery & URL Inspection
 As attachment routes were heavily restricted, I tested URL-based delivery resilience.
 
-### Test 5.1 — High-Reputation URL
+### 1.5.1 High-Reputation URL
 - **Method:** Included a link to a widely trusted domain.
 - **Result:** 🟢 **Delivered**
 - **Analysis:** Reputation-based allow rules were in effect for known-good domains.
 
-### Test 5.2 — Direct Link to Executable Artifact
+### 1.5.2 Direct Link to Executable Artifact
 - **Method:** Link pointed to a destination that resolves to an executable-type download.
 - **Result:** 🔴 **Quarantined**
 - **Analysis:** The SEG performed deep inspection of destination type/path, not only domain reputation, and blocked executable delivery patterns.
 
 ---
 
-## 📡 Phase 6 — Network Segmentation & Egress Constraints
+## 📡 Phase 1.6 — Network Segmentation & Egress Constraints
 I validated whether direct connectivity existed between segments and whether outbound channels could be established.
 
 - **Method:** Connectivity checks and reverse-connection feasibility testing (non-malicious).
@@ -156,16 +195,14 @@ I validated whether direct connectivity existed between segments and whether out
 
 ---
 
-## 🌐 Phase 7 — Web Reputation & Egress Inspection (Public Tunneling Pattern)
-I evaluated how the environment handles well-known “dual-use” tunneling endpoints.
+## 🌐 Phase 1.7 — Web Reputation & Egress Inspection (Public Tunneling Pattern)
+I evaluated how the environment handles well-known "dual-use" tunneling endpoints.
 
 - **Method:** Attempted to access a public tunnel URL that maps internal content outward.
 - **Result:** 🔴 **Blocked by Web Reputation**
 - **Analysis:** Browser/proxy layers applied **category/reputation filtering** to known tunneling patterns.
 
----
-
-## 🛡️ Phase 7.1 — URL Rewriting & Time-of-Click Protection
+### 1.7.1 URL Rewriting & Time-of-Click Protection
 - **Observation:** Links were rewritten into long proxy-wrapped forms.
 - **Analysis:** This behavior aligns with **time-of-click protection** where links are re-evaluated at click time, not only at delivery.
 - **Result:** 🔴 **Session Termination**
@@ -173,111 +210,109 @@ I evaluated how the environment handles well-known “dual-use” tunneling endp
 
 ---
 
-## 🔗 Phase 8 — URL Obfuscation via Trusted Redirection
+## 🔗 Phase 1.8 — URL Obfuscation via Trusted Redirection
 - **Method:** Tested whether a trusted shortener/redirector would bypass blocking.
 - **Result:** 🔴 **Dropped / Quarantined**
 - **Analysis:** The gateway followed the redirection chain and blocked the final destination based on the resolved endpoint, making simple masking ineffective.
 
 ---
 
-## 🛠️ Phase 9 — Living off the Land (LotL) Behavior Observation
+## 🛠️ Phase 1.9 — Living off the Land (LotL) Behavior Observation
 With delivery routes blocked, I tested whether benign use of native tools would trigger EDR/EPP alerts.
 
-### Phase 9.1 — Native Scripting for Outbound Socket Behavior
+### 1.9.1 Native Scripting for Outbound Socket Behavior
 - **Method:** Constructed a basic outbound connection attempt using built-in scripting capabilities (non-admin context).
 - **Result:** 🟡 **No Immediate Alert**
 - **Analysis:** No instant process termination occurred, suggesting detection may be more dependent on known bad indicators, context, or downstream telemetry.
 
-### Phase 9.2 — “Ghost Connection” Anomaly
-- **Observation:** The client-side state indicated “connected,” but no corresponding server-side session was observed.
+### 1.9.2 "Ghost Connection" Anomaly
+- **Observation:** The client-side state indicated "connected," but no corresponding server-side session was observed.
 - **Analysis:** This behavior is consistent with **intercepting security infrastructure** that can simulate or absorb handshake states while suppressing application-layer traffic.
 
 ---
 
-## 🕵️ Phase 10 — Credential Harvesting Simulation (Layer 7)
+## 🕵️ Phase 1.10 — Credential Harvesting Simulation (Layer 7)
 I assessed human-layer and web-layer defenses using safe, simulated phishing workflows.
 
-### Phase 10.1 — Infrastructure Simulation
+### 1.10.1 Infrastructure Simulation
 - **Method:** Hosted a cloned login-like experience for awareness testing.
 - **Result:** 🔴 **Connection Reset / Blocked**
 - **Analysis:** Egress controls terminated sessions early, consistent with SNI/category inspection and tunnel endpoint reputation enforcement.
 
-### Phase 10.2 — Modern Authentication Portal Behavior
+### 1.10.2 Modern Authentication Portal Behavior
 - **Observation:** Modern SPAs use asynchronous calls rather than classic form POST workflows.
 - **Impact:** Naïve cloning patterns do not replicate end-to-end authentication flows.
 
 ---
 
-## 🚀 Phase 11 — Pivot to Evasion Validation & Local Vulnerability Posture
+## 🚀 Phase 1.11 — Pivot to Evasion Validation & Local Vulnerability Posture
 As public tunneling patterns were blocked, I tested alternate relay patterns and shifted toward local posture assessment.
 
-### Phase 11.1 — Alternate Relay Observations
+### 1.11.1 Alternate Relay Observations
 - **Observation:** Some lesser-known relay patterns may pass initial reputation checks.
 - **Result:** 🟢/🟡 **Partial Access with Degraded Rendering**
 - **Analysis:** Subresource loading was inconsistent, indicating proxy/browser-layer protections affecting CSS/JS/resource policies.
 
-### Phase 11.2 — Browser-Level Data Exfiltration Warnings & Hard Blocks
-- **Observation:** Browser protections surfaced “insecure submission” warnings.
+### 1.11.2 Browser-Level Data Exfiltration Warnings & Hard Blocks
+- **Observation:** Browser protections surfaced "insecure submission" warnings.
 - **Result:** 🔴 **Hard Policy Enforcement**
 - **Analysis:** Endpoint web protection/DLP controls prevented unsafe submission paths even when the user attempted to proceed.
 
-### Phase 11.3 — Cross-Environment Validation
+### 1.11.3 Cross-Environment Validation
 - **Observation:** The same behavior differed across environments with and without endpoint security controls.
 - **Conclusion:** The block was not a browser bug; it was enforced by endpoint security modules.
 
 ---
 
-## 🔍 Phase 12 — Internal Reconnaissance & Service Exposure Validation
+## 🔍 Phase 1.12 — Internal Reconnaissance & Service Exposure Validation
 Given perimeter manipulation risks, I validated the internal attack surface under an **Assume Breach / white-box** lens.
 
-### Phase 12.1 — Topology & Gateway Enforcement
+### 1.12.1 Topology & Gateway Enforcement
 - **Observation:** Distinct subnets and enforced routing indicated strong segmentation with secure gateway inspection (DNS security, web gateway, proxy/DPI).
 
-### Phase 12.2 — External Scanning Artifacts
+### 1.12.2 External Scanning Artifacts
 - **Observation:** Large-scale port scanning results appeared inconsistent with ground truth.
 - **Analysis:** Behavior matched **tarpit / spoofed responses** that delay or mislead reconnaissance.
 
 ---
 
-## 🔍 Phase 13 — Local Enumeration (Ground Truth)
+## 🔍 Phase 1.13 — Local Enumeration (Ground Truth)
 To avoid false positives from perimeter deception, I performed local checks on the endpoint.
 
-### Phase 13.1 — True Listening Services
+### 1.13.1 True Listening Services
 - **Observation:** A management service was listening on non-standard ports associated with out-of-band manageability components.
 - **Finding:** The process mapped to an Intel manageability component (AMT/LMS class services).
 - **Security Relevance:** Out-of-band or hardware-adjacent services can represent high-value targets because they may sit outside typical OS-level visibility.
 
 ---
 
-## ⚔️ Phase 14 — Intel Manageability (AMT) Exposure & Patch Validation
+## ⚔️ Phase 1.14 — Intel Manageability (AMT) Exposure & Patch Validation
 I validated whether known historical weaknesses were applicable.
 
-### Phase 14.1 — GUI Access Hardening
+### 1.14.1 GUI Access Hardening
 - **Observation:** Web GUI access was explicitly disabled by configuration.
 - **Result:** 🔴 **GUI Not Available**
 - **Analysis:** The system owner actively hardened manageability surfaces.
 
-### Phase 14.2 — API Endpoint Authentication
+### 1.14.2 API Endpoint Authentication
 - **Observation:** The manageability API required authenticated access and rejected default/empty credential patterns.
 - **Result:** 🔴 **No Bypass**
 - **Conclusion:** The observed version/configuration state was consistent with a patched posture against known bypass classes.
 
----
-
-## 🧱 Phase 14.3 — High-Privilege Local Service (Management Remote Control)
+### 1.14.3 High-Privilege Local Service (Management Remote Control)
 - **Observation:** A remote control/management service operated with SYSTEM-equivalent privileges on a local port.
 - **Risk Model:** If an attacker can legitimately expose or tunnel a local-only SYSTEM service, the blast radius increases — but exploitation still depends on authentication, protocol constraints, and environment controls.
 
 ---
 
-## 🧱 Phase 15 — Lateral Communication Constraints
+## 🧱 Phase 1.15 — Lateral Communication Constraints
 - **Observation:** Direct peer-to-peer connectivity and bridged ingress were prevented by network controls.
 - **Result:** 🔴 **No Direct Lateral Channel**
 - **Analysis:** VLAN controls and gateway enforcement reduced lateral movement opportunities.
 
 ---
 
-## 🚀 Phase 16 — Reverse Tunneling (Assume Breach Channel)
+## 🚀 Phase 1.16 — Reverse Tunneling (Assume Breach Channel)
 To simulate how a compromised host might open an outbound channel, I validated a reverse-tunnel concept at a high level.
 
 - **Method:** Outbound-initiated tunnel semantics (victim initiates, attacker receives).
@@ -286,35 +321,35 @@ To simulate how a compromised host might open an outbound channel, I validated a
 
 ---
 
-## 📱 Phase 17 — Out-of-Band Connectivity (OOB) Control Test
+## 📱 Phase 1.17 — Out-of-Band Connectivity (OOB) Control Test
 - **Method:** Migrated both systems to a separate, controlled network to remove corporate gateway interference.
 - **Result:** ✅ **Unrestricted local connectivity observed**
 - **Analysis:** This confirmed that earlier failures were enforcement artifacts of the enterprise stack, not host misconfiguration.
 
 ---
 
-## 🔑 Phase 18 — Internal Port Exposure via Tunnel (Lab Validation)
+## 🔑 Phase 1.18 — Internal Port Exposure via Tunnel (Lab Validation)
 - **Observation:** Local-only services became reachable from the attacker side once the assume-breach channel existed.
 - **Result:** ✅ **Service Reachability Confirmed**
 - **Security Takeaway:** The critical control is preventing unauthorized tunnel creation and detecting abnormal outbound channels.
 
 ---
 
-## 🎯 Phase 19 — Known CVE Validation (Patched State Confirmation)
+## 🎯 Phase 1.19 — Known CVE Validation (Patched State Confirmation)
 - **Method:** Validated a historical bypass class against the manageability surface.
 - **Result:** 🔴 **No Exploitation**
 - **Conclusion:** Target appeared **patched** and correctly validated authentication state.
 
 ---
 
-## 🔬 Phase 20 — Service Probing & Protocol Behavior (Management Remote Control)
+## 🔬 Phase 1.20 — Service Probing & Protocol Behavior (Management Remote Control)
 - **Observation:** The management service accepted TCP connections but remained non-verbose.
 - **Analysis:** This aligns with proprietary protocols requiring a valid handshake and refusing unauthenticated banner leakage.
 - **Conclusion:** Passive probes provided limited insight without legitimate protocol negotiation.
 
 ---
 
-## ⚖️ Phase 21 — Exploitability Constraints & Defense-in-Depth Confirmation
+## ⚖️ Phase 1.21 — Exploitability Constraints & Defense-in-Depth Confirmation
 I evaluated whether privileged authentications could be relayed across common services.
 
 - **Observation:** SMB signing was enforced.
@@ -325,22 +360,22 @@ I evaluated whether privileged authentications could be relayed across common se
 
 ---
 
-# 🛡️ Post-Exploitation Boundary Analysis (Assumed Breach)
+## 🛡️ Post-Exploitation Boundary Analysis (Assumed Breach)
 After establishing an assumed-breach channel and using a low-privilege domain context (anonymized), I tested what internal actions were possible vs. blocked.
 
-## 2.1 Authenticated Enumeration & EDR Response
+### 1.21.1 Authenticated Enumeration & EDR Response
 - **Observation:** Basic authenticated visibility existed, but aggressive enumeration patterns triggered disconnections.
 - **Interpretation:** Either EDR behavioral controls or hardened RPC/SAMR policies were terminating suspicious sessions.
 
-## 2.2 Privilege Mapping (Insider Risk Finding)
+### 1.21.2 Privilege Mapping (Insider Risk Finding)
 - **Finding:** The tested account possessed an unusually high set of privileges relative to baseline expectations.
 - **Risk:** Excess privileges increase insider-threat impact and reduce the effectiveness of segmentation if local execution is achieved.
 
-## 2.3 Coercion Attempt (Patched / Filtered)
+### 1.21.3 Coercion Attempt (Patched / Filtered)
 - **Result:** 🔴 **Not supported / blocked**
 - **Conclusion:** The environment appeared patched and/or filtered against common coercion primitives.
 
-## 2.4 Lateral Movement Constraints
+### 1.21.4 Lateral Movement Constraints
 - **Remote token filtering / Remote UAC effects** limited administrative share access.
 - **RDP/WinRM** exposure was filtered.
 - **Outcome:** Even with credentials, interactive remote management channels were not available.
@@ -381,7 +416,7 @@ Environment-specific identifiers are redacted to protect the organization and to
 
 ---
 
-# 🔐 Insider Risk & Privilege Boundary Observation
+## 🔐 Insider Risk & Privilege Boundary Observation
 
 During the post-exploitation boundary analysis, it is important to clarify a contextual constraint:
 
@@ -446,3 +481,10 @@ but by the containment of blast radius and the visibility of abnormal behavior.
 
 This lab successfully validated multiple defensive layers and identified strategic improvement areas — which were responsibly communicated through internal reporting channels.
 
+---
+
+## ⏩ Next Phase
+
+This phase focused on initial access vectors and perimeter defenses. For a deeper dive into **post-breach lateral movement, tunneling techniques, and local privilege escalation attempts**, proceed to:
+
+### [➡️ Phase 2 — Network Boundary & Local Privilege Escalation](./phase2-network-pivesc/README.md)
