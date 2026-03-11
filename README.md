@@ -15,8 +15,8 @@ This research is divided into multiple phases, each focusing on a different laye
 
 | Phase | Focus Area | Description |
 |-------|------------|-------------|
-| [**Phase 1**](phase1-email-delivery/) | Email Perimeter & Delivery Controls | Analysis of Secure Email Gateway (SEG) rules, attachment filtering, and initial access vectors. |
-| [**Phase 2**](phase2-network-pivesc/) | Network Boundary & Local Privilege Escalation | Post-breach lateral movement, egress filtering validation, and local attack surface mapping. |
+| [**Phase 1**](phase1-initial-access/) | Initial Access & Delivery Vectors | Analysis of email gateway rules, attachment filtering, macro execution controls, container-based delivery, HTML smuggling, and link-based delivery. |
+| [**Phase 2**](phase2-network-pivesc/) | Network Boundary & Local Privilege Escalation | Post-breach lateral movement, egress filtering validation, reverse tunneling, and local attack surface mapping. |
 
 ---
 
@@ -33,18 +33,8 @@ Each phase directory contains its own detailed README with methodology, observat
 ```plaintext
 .
 ├── README.md                    # This file
-├── phase1-email-delivery/       # Email gateway and delivery testing
+├── phase1-initial-access/        # Initial access vectors (email, web, macro, etc.)
 │   └── README.md
 ├── phase2-network-pivesc/        # Network segmentation, tunneling, local priv esc
 │   └── README.md
 └── ... (future phases)
-```
-
----
-
-## 🔒 Responsible Disclosure
-
-All findings, observations, and boundary assessments were formally reported to supervising security personnel at **TARGET-CORP** through internal channels.  
-No unauthorized actions were performed. No data exfiltration occurred. No persistence mechanisms were deployed.
-
-This work strictly adhered to internship authorization boundaries and ethical cybersecurity research principles.
