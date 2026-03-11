@@ -487,4 +487,4 @@ This lab successfully validated multiple defensive layers and identified strateg
 
 This phase focused on initial access vectors and perimeter defenses. For a deeper dive into **post-breach lateral movement, tunneling techniques, and local privilege escalation attempts**, proceed to:
 
-### [➡️ Phase 2 — Network Boundary & Local Privilege Escalation](./phase2-network-pivesc/) 
+### [➡️ Phase 2 — Network Boundary & Local Privilege Escalation](/phase2-network-pivesc/) 
