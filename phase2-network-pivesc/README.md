@@ -89,7 +89,7 @@ To isolate the corporate network's influence and validate findings, the lab was 
 
 | State | Network | Components | Purpose |
 |-------|---------|------------|---------|
-| **State A (Corporate)** | `10.34.22.0/24` | TARGET-PC (Windows 11) with active EDR/EPP/DLP | Test real-world defenses |
+| **State A (Corporate)** | `10.X.X.0/24` | TARGET-PC (Windows 11) with active EDR/EPP/DLP | Test real-world defenses |
 | **State B (Isolated)** | `172.20.10.0/24` | TARGET-PC + Kali-Attacker on same subnet | Validate baseline behavior |
 
 A virtualized instance of Kali Linux (`Kali-QEMU`) was running inside `TARGET-PC` using QEMU in default user-mode networking (NAT). This created a layered network environment:
@@ -99,7 +99,7 @@ Kali-Attacker (External) <-- Internet/Corp Gateway --> TARGET-PC (Corporate Netw
 ```
 
 **IP Addresses (Anonymized):**
-- `TARGET-PC` (Corporate): `10.34.22.54`
+- `TARGET-PC` (Corporate): `10.X.X.X`
 - `TARGET-PC` (Isolated): `172.20.10.3`
 - `Kali-Attacker` (Isolated): `172.20.10.4`
 - `Kali-QEMU` (Internal NAT): `10.0.2.15`
@@ -147,7 +147,7 @@ ping 172.20.10.4
 
 ---
 
-## Phase 2.2 — DNS & Web Reputation Filtering
+## 🌐 Phase 2.2 — DNS & Web Reputation Filtering
 
 Attempts to connect to known dual-use or tunneling infrastructure were blocked at the application layer.
 
@@ -165,7 +165,7 @@ curl -v http://[tunneling-service].com
 
 ---
 
-## Phase 2.3 — URL Rewriting & Deep Link Inspection
+## 🔄 Phase 2.3 — URL Rewriting & Deep Link Inspection
 
 Even when using a trusted URL shortener to mask the final destination, the gateway's defenses held firm.
 
@@ -317,16 +317,16 @@ import socket
 
 s = socket.socket()
 s.connect(('127.0.0.1', 2701))
-print("Bağlandı, sunucudan veri bekleniyor...")
+print("Connected, waiting for server data...")
 data = s.recv(1024)
-print("Alınan:", data)
+print("Received:", data)
 s.close()
 ```
 
 **Output:**
 ```
-Bağlandı, sunucudan veri bekleniyor...
-Alınan: b''
+Connected, waiting for server data...
+Received: b''
 ```
 
 #### Test 2.6.2.3 — Send "START_HANDSHAKE" Back
@@ -360,7 +360,7 @@ With a limited command shell on `TARGET-PC` (as a standard domain user), a compr
 whoami
 ```
 
-**Output:** `neova\yusuf.karamuk`
+**Output:** `DOMAIN\testuser`
 
 ```cmd
 whoami /priv
@@ -370,13 +370,13 @@ whoami /priv
 ```
 PRIVILEGES INFORMATION
 ----------------------
-Privilege Name                Description                        State
-============================= ================================== ========
-SeShutdownPrivilege           Sistemi kapat                      Disabled
-SeChangeNotifyPrivilege       Çapraz geçiş denetimini atla       Enabled
-SeUndockPrivilege             Bilgisayarı takma biriminden çıkar Disabled
-SeIncreaseWorkingSetPrivilege İşlem çalışma kümesini artır       Disabled
-SeTimeZonePrivilege           Saat dilimini değiştir             Disabled
+Privilege Name                Description                    State
+============================= ============================== ========
+SeShutdownPrivilege           Shut down the system           Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking       Enabled
+SeUndockPrivilege             Remove computer from docking   Disabled
+SeIncreaseWorkingSetPrivilege Increase process working set   Disabled
+SeTimeZonePrivilege           Change the time zone           Disabled
 ```
 
 **Key Finding:** Required privileges for token impersonation (`SeImpersonatePrivilege`, `SeAssignPrimaryTokenPrivilege`) were **not present**.
@@ -412,7 +412,7 @@ Checked key service directories for write permissions:
 icacls "C:\Program Files\TeamViewer\TeamViewer_Service.exe"
 icacls "C:\Program Files (x86)\Dell\UpdateService\ServiceShell.exe"
 icacls "C:\Program Files\GLPI-Agent\perl\bin\glpi-agent.exe"
-icacls "C:\Program Files (x86)\CheckPoint\Endpoint Security\..."
+icacls "C:\Program Files (x86)\Vendor\Security\..."
 ```
 
 | Result | Analysis |
@@ -495,7 +495,7 @@ net user %username% /domain
 ```
 
 **Key Findings:**
-- User is member of `EV 6 AYDAN ESKI` (Enterprise Vault archive group)
+- User is member of standard domain groups
 - User is member of `Domain Users`
 - User is **not** in local Administrators group
 
@@ -652,15 +652,15 @@ C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe C:\Windows\CCM\Temp\
 
 **Attempt 1 Output:**
 ```
-error MSB4067: <UsingTask> öğesinin altındaki <Task> öğesi tanınmıyor.
+error MSB4067: The <Task> element beneath the <UsingTask> element is unrecognized.
 ```
 
 **Analysis:** This was a **structural/environment error**, not a security block. The `CodeTaskFactory` could not be loaded, likely due to environment path issues or missing dependencies.
 
 **Attempt 2 (Corrected XML):**
 ```
-C:\Windows\CCM\Temp\shell.xml(51,5): error CS1513: } bekleniyor
-C:\Windows\CCM\Temp\shell.xml(51,5): error CS0542: 'ReverseShell': üye adları kendilerini kapsayan türle aynı olamaz
+C:\Windows\CCM\Temp\shell.xml(51,5): error CS1513: } expected
+C:\Windows\CCM\Temp\shell.xml(51,5): error CS0542: 'ReverseShell': member names cannot be the same as their enclosing type
 ```
 
 **Analysis:** C# compilation errors. The code did not properly implement the required Task interface.
@@ -836,7 +836,7 @@ echo whoami > C:\Windows\CCM\Temp\test.bat
 C:\Windows\CCM\Temp\test.bat
 ```
 
-**Output:** `neova\yusuf.karamuk`
+**Output:** `DOMAIN\testuser`
 
 | Result | Analysis |
 |--------|----------|
@@ -947,9 +947,10 @@ curl -k http://127.0.0.1:16992
 
 ## 📎 Notes
 
-- All IP addresses, hostnames, and usernames have been anonymized.
+- All IP addresses, hostnames, domain names, and usernames have been anonymized.
 - Implementation details for certain techniques (e.g., reverse tunnel) are intentionally excluded to prevent misuse.
 - This research was conducted in an isolated lab environment with explicit authorization.
+- No actual corporate systems were harmed during this testing.
 
 ---
 
