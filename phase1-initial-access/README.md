@@ -5,7 +5,7 @@ This repository contains **research notes and simulation results** collected in 
 All activities were performed for **defensive validation, detection engineering awareness, and security control evaluation**.  
 No production systems, real corporate infrastructure, proprietary data, or external third parties were targeted.
 
-> **Redaction Notice:** Organization name, network identifiers, hostnames, usernames, and any environment-specific fingerprints have been anonymized as **TARGET-CORP** to prevent attribution and to protect operational security.
+> **Redaction Notice:** Organization name, network identifiers, hostnames, usernames, and any environment-specific fingerprints have been anonymized to prevent attribution and to protect operational security.
 
 ---
 
@@ -65,6 +65,7 @@ No production systems, real corporate infrastructure, proprietary data, or exter
   - [1.21.4 Lateral Movement Constraints](#1214-lateral-movement-constraints)
 - [🏆 Final Engagement Summary](#-final-engagement-summary)
 - [📌 Defensive Recommendations](#-defensive-recommendations-high-level)
+- [📎 Notes](#-notes)
 - [🔐 Insider Risk & Privilege Boundary Observation](#-insider-risk--privilege-boundary-observation)
 - [📣 Responsible Disclosure](#-responsible-disclosure)
 - [🏁 Final Reflection](#-final-reflection)
@@ -361,7 +362,7 @@ I evaluated whether privileged authentications could be relayed across common se
 ---
 
 ## 🛡️ Post-Exploitation Boundary Analysis (Assumed Breach)
-After establishing an assumed-breach channel and using a low-privilege domain context (anonymized), I tested what internal actions were possible vs. blocked.
+After establishing an assumed-breach channel and using a low-privilege domain context, I tested what internal actions were possible vs. blocked.
 
 ### 1.21.1 Authenticated Enumeration & EDR Response
 - **Observation:** Basic authenticated visibility existed, but aggressive enumeration patterns triggered disconnections.
@@ -412,7 +413,7 @@ After establishing an assumed-breach channel and using a low-privilege domain co
 
 ## 📎 Notes
 This repository intentionally focuses on **defensive outcomes, detection insights, and control validation**.  
-Environment-specific identifiers are redacted to protect the organization and to ensure responsible publication.
+All infrastructure identifiers (domains, IPs, hostnames, usernames) have been anonymized to protect the organization and ensure responsible publication.
 
 ---
 
@@ -442,13 +443,13 @@ While no full system compromise was achieved, the structural exposure of high-pr
 
 ## 📣 Responsible Disclosure
 
-All findings, observations, and boundary assessments — including privilege exposure, service posture, and potential insider risk implications — were formally reported to my mentor and supervising security personnel at **TARGET-CORP**.
+All findings, observations, and boundary assessments — including privilege exposure, service posture, and potential insider risk implications — were formally reported to supervising security personnel and my assigned mentor.
 
 The objective of this engagement was not exploitation, but validation of defensive depth and identification of structural risk areas.
 
-No unauthorized actions were performed.
-No data exfiltration occurred.
-No persistence mechanisms were deployed.
+**No unauthorized actions were performed.**  
+**No data exfiltration occurred.**  
+**No persistence mechanisms were deployed.**
 
 This work strictly adhered to internship authorization boundaries and ethical cybersecurity research principles.
 
@@ -456,7 +457,7 @@ This work strictly adhered to internship authorization boundaries and ethical cy
 
 ## 🏁 Final Reflection
 
-This engagement demonstrates that while TARGET-CORP maintains a highly mature defense-in-depth architecture across:
+This engagement demonstrates that the target organization maintains a highly mature defense-in-depth architecture across:
 
 - Email security
 - Endpoint protection
@@ -465,7 +466,7 @@ This engagement demonstrates that while TARGET-CORP maintains a highly mature de
 - Patch management
 - SMB signing enforcement
 
-the most realistic residual risk lies in:
+However, the most realistic residual risk lies in:
 
 > **Privileged Insider Abuse combined with Local Execution Capability**
 
@@ -476,8 +477,7 @@ This reinforces the importance of:
 - Behavioral monitoring for administrative accounts
 - Control over local execution of dual-use tooling
 
-Security maturity is not defined by the absence of vulnerabilities,
-but by the containment of blast radius and the visibility of abnormal behavior.
+Security maturity is not defined by the absence of vulnerabilities, but by the containment of blast radius and the visibility of abnormal behavior.
 
 This lab successfully validated multiple defensive layers and identified strategic improvement areas — which were responsibly communicated through internal reporting channels.
 
@@ -487,4 +487,4 @@ This lab successfully validated multiple defensive layers and identified strateg
 
 This phase focused on initial access vectors and perimeter defenses. For a deeper dive into **post-breach lateral movement, tunneling techniques, and local privilege escalation attempts**, proceed to:
 
-### [➡️ Phase 2 — Network Boundary & Local Privilege Escalation](/phase2-network-pivesc/) 
+### [➡️ Phase 2 — Network Boundary & Local Privilege Escalation](/phase2-network-pivesc/)
